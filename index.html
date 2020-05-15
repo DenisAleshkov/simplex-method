@@ -1,87 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/styles.css">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/styles.css">
 	<title>Simplex-method</title>
 </head>
+
 <body>
-		<header class="header">
-			<div class="header-logo">
-				<h1 class="header-name">
-					Симплексный метод
-				</h1>
-			</div>
-		</header>
-		<div class="container simplex" id="page">
-			<div class="simplex-form">
-				<div class="simplex-box">
-					<div class="uravnenie virazhenie">
+	<header class="header">
+		<div class="header-logo">
+			<h1 class="header-name">
+				Симплексный метод
+			</h1>
+		</div>
+	</header>
+	<div class="container simplex" id="page">
+		<div class="simplex-form">
+			<div class="box">
+				<div class="condition">
+					<p class="condition_text">
+						Автопогрузчики АП-1 и АП-2 заняты работами на площадках П1 и П2. Не более чем за <span
+							class="right_side">
+							<input class="time_give" type="text" value="24" />
+						</span> ч на площадке П1 необходимо погрузить <input class="tons_give" type="text"
+							value="230" /> т груза, на площадке П2 – <input class="tons_give" type="text" value="168" />
+						т. Количество груза, которое может погрузить каждый автопогрузчик за
 						<span class="right_side">
-						<select name="type_of_work">
+							<input class="period_give" type="text" value="1" />
+						</span>
+						час на той или иной площадке, а также стоимость погрузки одной тонны груза приведены в таблице.
+						Установить, сколько тонн должен погрузить каждый автопогрузчик на той или другой площадке так,
+						чтобы своевременно выполнить задание с
+						<select class="select_function" name="type_of_work">
 							<option value="1">min</option>
 							<option value="-1">max</option>
-						</select>	
-						F= </span>
+						</select>
+						затратами.
+					</p>
+				</div>
+				<table class="table">
+					<thead class="table_header">
+						<tr>
+							<th rowspan="2">Автопогрузчики</th>
+							<th colspan="2">Мощность на площадке</th>
+							<th colspan="2">Стоимость работ на площадке</th>
+						</tr>
+						<tr>
+							<th>П1</th>
+							<th>П2</th>
+							<th>П1</th>
+							<th>П2</th>
+						</tr>
+					</thead>
+					<tbody class="table_body">
+						<tr>
+							<td>АП-1</td>
+							<td>
+								<input class="power_give_1" type="text" value="10" />
+							</td>
+							<td>
+								<input class="power_give_1" type="text" value="12" />
+							</td>
+							<td>
+								<input class="input_function" type="text" value="8" />
+							</td>
+							<td>
+								<input class="input_function" type="text" value="7" />
+							</td>
+						</tr>
+						<tr>
+							<td>АП-2</td>
+							<td>
+								<input class="power_give_2" type="text" value="13" />
+							</td>
+							<td>
+								<input class="power_give_2" type="text" value="13" />
+							</td>
+							<td>
+								<input class="input_function" type="text" value="12" />
+							</td>
+							<td>
+								<input class="input_function" type="text" value="13" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="simplex-box">
+				<div id="ogranichenie_block">
+					<div class="ogranichenie virazhenie">
 						<span class="left_side">
-								<input type="text" value ="0" />x<sub>1</sub> +
-								<input type="text" value ="0" />x<sub>2</sub>
+							<input class="" type="text" value="1" />x<sub>1</sub> +
+							<input type="text" value="0" />x<sub>2</sub> +
+							<input class="" type="text" value="1" />x<sub>3</sub> +
+							<input type="text" value="0" />x<sub>4</sub>
 						</span>
 						<span class="right_side">
-							<a href="#" class="add_x">+</a>
+							<select>
+								<option value="-1">=</option>
+							</select>
+							<input class="tons_take" type="text" value="0" />
 						</span>
 					</div>
-
-					<div id="ogranichenie_block">
-						<div class="ogranichenie virazhenie">
-							<span class="left_side">
-								<input type="text" value ="0" />x<sub>1</sub> +
-								<input type="text" value ="0" />x<sub>2</sub>
-							</span>
-							<span class="right_side">
-								<select>
-									<option value="1">≤</option>
-									<option value="-1">≥</option>
-									<option value="-1">=</option>
-								</select>	
-								<input type="text" value ="0" />
-							</span>
-						</div>
-						<div class="ogranichenie virazhenie">
-							<span class="left_side">
-								<input type="text" value ="0" />x<sub>1</sub> +
-								<input type="text" value ="0" />x<sub>2</sub>
-							</span>
-							<span class="right_side">
-								<select>
-									<option value="1">≤</option>
-									<option value="-1">≥</option>
-									<option value="-1">=</option>
-								</select>	
-								<input type="text" value ="0" />
-							</span>
-						</div>
+					<div class="ogranichenie virazhenie">
+						<span class="left_side">
+							<input type="text" value="0" />x<sub>1</sub> +
+							<input class="" type="text" value="1" />x<sub>2</sub> +
+							<input type="text" value="0" />x<sub>3</sub> +
+							<input class="" type="text" value="1" />x<sub>4</sub>
+						</span>
+						<span class="right_side">
+							<select>
+								<option value="-1">=</option>
+							</select>
+							<input class="tons_take" type="text" value="0" />
+						</span>
 					</div>
-					<div class="button-group">
-						<div class="ogranichenie_add button-block">
-							<a href="#" class="simplex-button">+ Добавить ограничение</a>
-						</div>
-						<div class="submit button-block">
-							<a href="#" class="simplex-button">Вычислить</a>
-						</div>
+					<div class="ogranichenie virazhenie">
+						<span class="left_side">
+							<input type="text" value="1/10" />x<sub>1</sub> +
+							<input type="text" value="1/12" />x<sub>2</sub> +
+							<input type="text" value="0" />x<sub>3</sub> +
+							<input type="text" value="0" />x<sub>4</sub>
+						</span>
+						<span class="right_side">
+							<select>
+								<option value="1">≤</option>
+								<option value="-1">≥</option>
+								<option value="-1">=</option>
+							</select>
+							<input class="time_take" type="text" value="0" />
+						</span>
 					</div>
-				</div>	
+					<div class="ogranichenie virazhenie">
+						<span class="left_side">
+							<input type="text" value="0" />x<sub>1</sub> +
+							<input type="text" value="0" />x<sub>2</sub> +
+							<input type="text" value="1/13" />x<sub>3</sub> +
+							<input type="text" value="1/13" />x<sub>4</sub>
+						</span>
+						<span class="right_side">
+							<select>
+								<option value="1">≤</option>
+								<option value="-1">≥</option>
+								<option value="-1">=</option>
+							</select>
+							<input class="time_take" type="text" value="0" />
+						</span>
+					</div>
+				</div>
+				<div class="button-group">
+					<div class="submit button-block">
+						<a href="#" class="simplex-button">Вычислить</a>
+					</div>
 				</div>
 			</div>
-			<div class="container result" id="result"></div>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="./js/bootstrap.min.js"></script>
-<script src="./js/sweetalert.min.js"></script>
-<script src="./js/jquery.min.js"></script>
-<script src="./js/main.js"></script>
+		</div>
+	</div>
+	<div class="container result" id="result"></div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/sweetalert.min.js"></script>
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/main.js"></script>
 </body>
+
 </html>

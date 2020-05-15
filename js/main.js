@@ -1,66 +1,21 @@
 $(document).ready(function(){
-	max_x = 2;
-	// Считаем максимальное количество Иксов
-	$('#ogranichenie_block .ogranichenie').each(function(){
-		var input_num = $(this).find('input').length -1;
-		if (input_num>max_x)
-			max_x = input_num;
-	})
-
+	max_x = 4;
 	$('.ogranichenie').show();
-	
 })
-	// Добавляем Х
-	$('a.add_x').live('click', function(){
-		// Ограничили количество Иксов до 7
-		if ($(this).parents('.virazhenie').find('input').length < 7){ // Ограничение можно снять или изменить
-			if ($(this).parents('.uravnenie').length){
-				var count_x = $(this).parents('.virazhenie').find('input').length +1;
-				if (count_x > max_x)
-					max_x = count_x;
-			}else{
-				var count_x = $(this).parents('.virazhenie').find('input').length;
-				if (count_x > max_x){
-					max_x = count_x;		
-				}
-				
-			}
-			$('.left_side').css('display', 'flex');
-			$('.virazhenie').children('.left_side').append(' + <input type="text" class="new_params" value ="0" />x'+`<sub>${count_x}</sub> `);
-			$('.new_params').show(500);
-			$('.new_params').css('display', 'inline-block');
-		}
-		else {
-			$('.add_x').css('display', 'none');
-		}
-		$('.left_side').css('display', 'initial');
-		return false;
-	})
-	
-	// Добавляем ограничение
-	$('.ogranichenie_add').live('click', function(){
-		var html_inputs = ' <input type="text" value ="0" />x<sub>1</sub>';
-		for (var q = 2; q<=max_x;q++)
-			html_inputs += ' + <input type="text" value ="0" />x'+`<sub>${q}</sub> `;
-		var html_code = '<div class="ogranichenie virazhenie"><span class="left_side">'+html_inputs+'</span><span class="right_side"><select><option value="1">≤</option><option value="-1">≥</option><option value="1">=</option></select>'+' '+'<input type="text" value ="0" /></span></div>';		
-		$('#ogranichenie_block').append(html_code);
-		$('#ogranichenie_block .ogranichenie:hidden').slideDown(200);
-		
-		return false;
-	})	
+	$('.submit').live('click', function(){
 
-	$('.submit').live('click', function(){ 
-	$('.simplex-form input').each(function() {
+	$('body input').each(function() {
 		try{
 			if(!$.isNumeric(eval($(this).val()).toFixed(3))){
-				isError();
+				showError();
 			}
 		}
 		catch(e){
-			isError();
+			showError();
 		}
 	});
 	$('#result').html(' '); 
+		swapBlockValue();
 		var matrix = new Array();
 		matrix = new Array();
 		var i = 0;
@@ -69,6 +24,8 @@ $(document).ready(function(){
 			matrix[i] = new Array();
 			for (var j = 0; j < max_x + 1; j++) {
 				if ($(this).find('input').eq(j).length && $(this).find('input').eq(j).val() ){
+					if($(this).find('input').eq(j).val()==0){
+					}
 					var inp_val = (eval($(this).find('input').eq(j).val())).toFixed(3) * $(this).find('select').val();
 				}else{
 					var inp_val = 0;
@@ -98,8 +55,8 @@ $(document).ready(function(){
 	// Последняя строка сама функция
 		Fun = new Array();
 		for (var j = 0; j < matrix[0].length; j++) {
-			if ($('.uravnenie .left_side').find('input').eq(j).length){
-				var inp_val = $('.uravnenie .left_side').find('input').eq(j).val() * $('.uravnenie select').val();
+			if ($('.input_function').eq(j).length){
+				var inp_val = $('.input_function').eq(j).val() * $('.select_function').val();
 			}else{
 				var inp_val = 0;
 			}
@@ -145,14 +102,9 @@ function step1(){
 		for (var k=0; k < matrix.length; k++){
 			free[k] = matrix[k][max_x];
 		}
-		
 		if (minelm(free, false, true) < 0 && iteration < 10) 
-			step1();
-	
+			step1();	
 }
-
-
-
 function step2(){
 		iteration++;
 		// находим ведущий столбец
@@ -171,10 +123,8 @@ function step2(){
 				min_row = tmp;
 			}
 		}
-	
 		min_k1_num = min_col_num;
 		min_k_num = min_row_num;
-
 		// Обновляем индексы элементов по горизонтале и вертикале
 		tmp = horisont_x[min_k1_num];
 		horisont_x[min_k1_num] = vertical_x[min_k_num];
@@ -184,18 +134,14 @@ function step2(){
 			swal("Функция в области допустимых решений задачи не ограничена!", " ", "success");
 			throw new Error('Функция в области допустимых решений задачи не ограничена!')
 		}
-
 	// Замена	
 		update_matrix(min_k_num, min_k1_num);
 	// матрица свободных членов
 		for (var k=0; k < matrix.length; k++){
 			free[k] = matrix[k][max_x];
 		}
-		
-
 		if (minelm(matrix[matrix.length-1], false, true) < 0 && iteration < 10) 	
 			step2();
-
 }
 // Функция замены (обновления матрицы)
 function update_matrix(min_k_num, min_k1_num){
@@ -236,21 +182,21 @@ function update_matrix(min_k_num, min_k1_num){
 		// Иксы, равные нулю
 		for (i = 0; i< horisont_x.length-1;i++){
 			if (horisont_x[i]<max_x)
-				nulls += '<span class="result-arguments">'+'x'+`<sub>${(horisont_x[i]+1)}</sub>`+'=';
+				nulls += '<span class="result-arguments">'+'Автопогрузчик'+' '+`№${(horisont_x[i]+1)} должен погрузить`+': 0 тонн груза ' +'<br /><br />'+'</span>';
 		}
-		nulls +='0 <br /><br />'+'</span>';
+		// nulls +='0 тонн груза <br /><br />'+'</span>';
 		var vars ='';
 		// Иксы, отличные от нуля
 		for (i = 0; i< vertical_x.length;i++){
 			if (vertical_x[i]<max_x)
-				vars +='<span class="result-arguments">' + 'x'+ `<sub>${(vertical_x[i]+1)}</sub>`+'='+`${matrix[i][max_x]}`+'<br /></span>';
+				vars +='<span class="result-arguments">' + 'Автопогрузчик'+' '+ `№${(vertical_x[i]+1)} должен погрузить: `+`${matrix[i][max_x]} тонн груза`+'<br /></span>';
 		}
 		var main_result = '';
 		// Минимум(максимум) функции
-		if ($('.uravnenie select').val() > 0)
-			main_result = '<span class="result-arguments">F<sub>min</sub> ='+`${matrix[matrix.length-1][max_x]*(-1)}</span>`;
+		if ($('.select_function').val() > 0)
+			main_result = '<span class="result-arguments">Минимальные затраты: '+`${matrix[matrix.length-1][max_x]*(-1)}</span>`;
 		else
-			main_result = '<span class="result-arguments">F<sub>max</sub> ='+`${matrix[matrix.length-1][max_x]}</span>`;
+			main_result = '<span class="result-arguments">Максимальные затраты: '+`${matrix[matrix.length-1][max_x]}</span>`;
 		$('.result-data').append(nulls+vars+'<br />'+main_result);
 		$('#result').css('opacity', 1);
 	}
@@ -281,7 +227,34 @@ function minelm(v, dispnum, not_last){
 	}
 }
 
-function isError() {
+function showError() {
 	swal("Ошибка", 'Проверьте введеные данные', "error");
 	throw new Error('Проверьте введеные данные')
+}
+
+function swapBlockValue() {
+	var giveTime = $('.time_give').val();
+	var givePeriod = $('.period_give').val();
+	var i = 0;
+	var j = 0;
+	
+	$('.time_take').val(giveTime);
+	$('.tons_give').each(function(index){
+		$('.tons_take')[index].value = ($(this).val());
+	})		
+	
+	$('#ogranichenie_block .left_side input').each(function(index){
+		if(eval($(this).val()) !== 0 && index <= 7){
+			$(this).val(givePeriod);
+		}
+		if(index <= 9  && index >= 8){
+			$(this).val(1/eval($('.power_give_1')[i].value));
+			i++;
+		}
+		if(index <= 15  && index >= 14){
+			$(this).val(1/eval($('.power_give_2')[j].value));	
+			console.log("$('.power_give_2')[j].value)", $('.power_give_2')[j].value);
+			j++;
+		}
+	})	
 }
